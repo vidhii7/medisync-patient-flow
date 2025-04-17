@@ -2,13 +2,26 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "@/components/common/ThemeToggle";
+import { auth } from "@/config/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Redirect to dashboard or login
-    navigate("/dashboard");
+    // Check if user is authenticated with Firebase
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, redirect to dashboard
+        navigate("/dashboard");
+      } else {
+        // No user is signed in, redirect to login
+        navigate("/login");
+      }
+    });
+    
+    // Cleanup subscription
+    return () => unsubscribe();
   }, [navigate]);
 
   return (
