@@ -1,7 +1,10 @@
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { auth } from "@/config/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "sonner";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -15,9 +18,16 @@ const LoginForm: React.FC = () => {
     setIsSubmitting(true);
 
     try {
+      // Firebase authentication
+      await signInWithEmailAndPassword(auth, email, password);
+      
+      // Then our context login for role management
       await login(email, password);
+      toast.success("Logged in successfully!");
       navigate("/dashboard");
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Login failed";
+      toast.error(errorMessage);
       console.error("Login error:", err);
     } finally {
       setIsSubmitting(false);
@@ -25,24 +35,21 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 w-full max-w-md">
+    <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 w-full max-w-md">
       <div className="mb-6 text-center">
-        <div className="w-12 h-12 bg-medisync-500 rounded-lg mx-auto flex items-center justify-center mb-4">
-          <span className="text-2xl font-bold text-white">M</span>
-        </div>
-        <h1 className="text-2xl font-bold text-gray-900">Sign in to MediSync</h1>
-        <p className="text-gray-500 mt-2">Enter your credentials to access your account</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Sign in to MediSync</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-2">Enter your credentials to access your account</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="bg-red-50 text-red-700 p-3 rounded-md text-sm">
+          <div className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 p-3 rounded-md text-sm">
             {error}
           </div>
         )}
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Email address
           </label>
           <input
@@ -53,13 +60,13 @@ const LoginForm: React.FC = () => {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-medisync-500 focus:border-medisync-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-medisync-500 focus:border-medisync-500"
             placeholder="name@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Password
           </label>
           <input
@@ -70,7 +77,7 @@ const LoginForm: React.FC = () => {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-medisync-500 focus:border-medisync-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-medisync-500 focus:border-medisync-500"
           />
         </div>
 
@@ -82,13 +89,13 @@ const LoginForm: React.FC = () => {
               type="checkbox"
               className="h-4 w-4 text-medisync-600 focus:ring-medisync-500 border-gray-300 rounded"
             />
-            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
               Remember me
             </label>
           </div>
-          <button type="button" className="text-sm font-medium text-medisync-600 hover:text-medisync-500">
+          <Link to="/forgot-password" className="text-sm font-medium text-medisync-600 hover:text-medisync-500">
             Forgot password?
-          </button>
+          </Link>
         </div>
 
         <div>
@@ -105,10 +112,10 @@ const LoginForm: React.FC = () => {
       <div className="mt-6">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
+            <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Demo accounts</span>
+            <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Demo accounts</span>
           </div>
         </div>
 
@@ -119,7 +126,7 @@ const LoginForm: React.FC = () => {
               setEmail("doctor@example.com");
               setPassword("password");
             }}
-            className="text-xs flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50"
+            className="text-xs flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 dark:text-white"
           >
             Doctor Login
           </button>
@@ -129,7 +136,7 @@ const LoginForm: React.FC = () => {
               setEmail("nurse@example.com");
               setPassword("password");
             }}
-            className="text-xs flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50"
+            className="text-xs flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 dark:text-white"
           >
             Nurse Login
           </button>
@@ -139,7 +146,7 @@ const LoginForm: React.FC = () => {
               setEmail("coordinator@example.com");
               setPassword("password");
             }}
-            className="text-xs flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50"
+            className="text-xs flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 dark:text-white"
           >
             Coordinator Login
           </button>
@@ -149,10 +156,19 @@ const LoginForm: React.FC = () => {
               setEmail("admin@example.com");
               setPassword("password");
             }}
-            className="text-xs flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50"
+            className="text-xs flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 dark:text-white"
           >
             Admin Login
           </button>
+        </div>
+        
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Don't have an account?{" "}
+            <Link to="/register" className="font-medium text-medisync-600 hover:text-medisync-500">
+              Register now
+            </Link>
+          </p>
         </div>
       </div>
     </div>

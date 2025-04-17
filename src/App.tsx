@@ -9,6 +9,7 @@ import { PatientProvider } from "@/contexts/PatientContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import ForgotPassword from "@/pages/ForgotPassword";
 import Dashboard from "@/pages/Dashboard";
 import PatientIntake from "@/pages/PatientIntake";
 import Patients from "@/pages/Patients";
@@ -33,6 +34,7 @@ const App = () => (
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 
                 <Route path="/dashboard" element={
                   <ProtectedRoute>
