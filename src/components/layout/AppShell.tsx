@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, UserPlus, ClipboardList, Users, List, LogOut, Bell, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ThemeToggle from "@/components/common/ThemeToggle";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -97,14 +98,14 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Top Navigation Bar */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="flex justify-between items-center px-4 h-16 mx-auto max-w-7xl">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-gray-600 hover:text-medisync-600"
+              className="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-medisync-600 dark:hover:text-medisync-400"
             >
               <List size={24} />
             </button>
@@ -113,23 +114,25 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
               <div className="w-8 h-8 bg-medisync-500 rounded-md flex items-center justify-center">
                 <span className="font-bold text-white">M</span>
               </div>
-              <span className="font-bold text-xl text-medisync-800">MediSync</span>
+              <span className="font-bold text-xl text-medisync-800 dark:text-medisync-300">MediSync</span>
             </Link>
           </div>
           
           <div className="flex items-center gap-4">
-            <button className="p-2 text-gray-600 hover:text-medisync-600 relative">
+            <ThemeToggle />
+            
+            <button className="p-2 text-gray-600 dark:text-gray-300 hover:text-medisync-600 dark:hover:text-medisync-400 relative">
               <Bell size={20} />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
             
             <div className="flex items-center gap-2">
               <div className="hidden md:flex flex-col items-end">
-                <span className="text-sm font-semibold">{user?.name}</span>
-                <span className="text-xs text-gray-600 capitalize">{user?.role}</span>
+                <span className="text-sm font-semibold dark:text-white">{user?.name}</span>
+                <span className="text-xs text-gray-600 dark:text-gray-300 capitalize">{user?.role}</span>
               </div>
-              <div className="w-8 h-8 rounded-full bg-medisync-100 flex items-center justify-center">
-                <User size={18} className="text-medisync-600" />
+              <div className="w-8 h-8 rounded-full bg-medisync-100 dark:bg-medisync-900 flex items-center justify-center">
+                <User size={18} className="text-medisync-600 dark:text-medisync-300" />
               </div>
             </div>
           </div>
@@ -141,7 +144,7 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
         {/* Sidebar */}
         <aside 
           className={cn(
-            "fixed inset-y-0 left-0 w-64 mt-16 bg-white border-r transition-transform transform z-20",
+            "fixed inset-y-0 left-0 w-64 mt-16 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform transform z-20",
             isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
           )}
         >
@@ -153,8 +156,8 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 className={cn(
                   "flex items-center px-4 py-3 text-sm font-medium rounded-md",
                   location.pathname === item.href
-                    ? "bg-medisync-50 text-medisync-600"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-medisync-600"
+                    ? "bg-medisync-50 dark:bg-medisync-900/50 text-medisync-600 dark:text-medisync-300"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-medisync-600 dark:hover:text-medisync-300"
                 )}
               >
                 <item.icon className="mr-3 h-5 w-5" />
@@ -164,7 +167,7 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
             
             <button
               onClick={handleLogout}
-              className="w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-medisync-600 rounded-md"
+              className="w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-medisync-600 dark:hover:text-medisync-300 rounded-md"
             >
               <LogOut className="mr-3 h-5 w-5" />
               Sign out
@@ -174,7 +177,7 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
         
         {/* Page Content */}
         <main className={cn(
-          "flex-1 transition-all duration-300",
+          "flex-1 transition-all duration-300 dark:text-white",
           isMobileMenuOpen ? "md:ml-64" : "ml-0 md:ml-64"
         )}>
           <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">

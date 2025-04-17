@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PatientProvider } from "@/contexts/PatientContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
@@ -22,57 +23,59 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <AuthProvider>
-        <PatientProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              
-              <Route path="/patient-intake" element={
-                <ProtectedRoute requiredRoles={["doctor", "admin"]}>
-                  <PatientIntake />
-                </ProtectedRoute>
-              } />
-              
-              <Route path="/patients" element={
-                <ProtectedRoute>
-                  <Patients />
-                </ProtectedRoute>
-              } />
-              
-              <Route path="/patients/:patientId" element={
-                <ProtectedRoute>
-                  <PatientDetail />
-                </ProtectedRoute>
-              } />
-              
-              <Route path="/patients/:patientId/tasks" element={
-                <ProtectedRoute requiredRoles={["coordinator", "admin"]}>
-                  <AssignTasks />
-                </ProtectedRoute>
-              } />
-              
-              <Route path="/tasks" element={
-                <ProtectedRoute>
-                  <Tasks />
-                </ProtectedRoute>
-              } />
-              
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </PatientProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <PatientProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/patient-intake" element={
+                  <ProtectedRoute requiredRoles={["doctor", "admin"]}>
+                    <PatientIntake />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/patients" element={
+                  <ProtectedRoute>
+                    <Patients />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/patients/:patientId" element={
+                  <ProtectedRoute>
+                    <PatientDetail />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/patients/:patientId/tasks" element={
+                  <ProtectedRoute requiredRoles={["coordinator", "admin"]}>
+                    <AssignTasks />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/tasks" element={
+                  <ProtectedRoute>
+                    <Tasks />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </PatientProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
