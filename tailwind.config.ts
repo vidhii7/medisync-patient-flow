@@ -52,6 +52,24 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+                medisync: {
+                    50: '#f5f3ff',
+                    100: '#ede9fe',
+                    200: '#ddd6fe',
+                    300: '#c4b5fd',
+                    400: '#a78bfa',
+                    500: '#9b87f5',
+                    600: '#7e69ab',
+                    700: '#6e59a5',
+                    800: '#5e4a88',
+                    900: '#1a1f2c',
+                },
+                status: {
+                    pending: '#FEF7CD',
+                    inprogress: '#D3E4FD',
+                    completed: '#F2FCE2',
+                    urgent: '#FFDEE2',
+                },
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
