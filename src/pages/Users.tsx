@@ -1,7 +1,8 @@
 
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where } from "firebase/firestore";
+import { createUserWithEmailAndPassword, deleteUser as deleteAuthUser, getAuth } from "firebase/auth";
 import { db } from "@/config/firebase";
 import UserCard from "@/components/users/UserCard";
 import { Loader2, UserPlus } from "lucide-react";
@@ -30,14 +31,34 @@ const Users = () => {
   const { data: users, isLoading, refetch } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
-      const querySnapshot = await getDocs(collection(db, 'users'));
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as UserData[];
+      const q = query(collection(db, 'users'));
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map(doc => ({ 
+        id: doc.id, 
+        ...doc.data() 
+      })) as UserData[];
     }
   });
 
   const handleCreateUser = async (data: Omit<UserData, 'id'>) => {
     try {
-      await addDoc(collection(db, 'users'), data);
+      const auth = getAuth();
+      
+      // Create authentication user
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password || 'defaultPassword123' // You should implement proper password handling
+      );
+
+      // Create user document in Firestore
+      const userDoc = await addDoc(collection(db, 'users'), {
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        uid: userCredential.user.uid
+      });
+
       toast.success('User created successfully');
       refetch();
       setUserDialogOpen(false);
@@ -51,7 +72,13 @@ const Users = () => {
     if (!selectedUser) return;
     
     try {
-      await updateDoc(doc(db, 'users', selectedUser.id), data);
+      const userRef = doc(db, 'users', selectedUser.id);
+      await updateDoc(userRef, {
+        name: data.name,
+        role: data.role,
+        ...(data.email && { email: data.email })
+      });
+
       toast.success('User updated successfully');
       refetch();
       setUserDialogOpen(false);
@@ -66,7 +93,25 @@ const Users = () => {
     if (!selectedUser) return;
     
     try {
+      // Delete user document from Firestore
       await deleteDoc(doc(db, 'users', selectedUser.id));
+      
+      // Attempt to delete the user from Authentication
+      // Note: This might fail if the user is not found in Auth, which is fine
+      try {
+        const q = query(collection(db, 'users'), where('email', '==', selectedUser.email));
+        const querySnapshot = await getDocs(q);
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
+        
+        if (userData.uid) {
+          const auth = getAuth();
+          await deleteAuthUser(auth.currentUser!);
+        }
+      } catch (authError) {
+        console.log('Auth user might have already been deleted:', authError);
+      }
+
       toast.success('User deleted successfully');
       refetch();
       setDeleteDialogOpen(false);
