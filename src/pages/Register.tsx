@@ -65,7 +65,7 @@ const Register: React.FC = () => {
           <img 
             src="/lovable-uploads/b19e2615-f6ed-4d68-80d6-78836845cc31.png" 
             alt="MediSync Logo" 
-            className="w-24 h-24 mb-6 object-contain"
+            className="w-24 h-24 mb-6 object-contain rounded-lg"
           />
         </div>
         <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-white">

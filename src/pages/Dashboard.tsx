@@ -72,7 +72,7 @@ const Dashboard: React.FC = () => {
             <img 
               src="/lovable-uploads/b19e2615-f6ed-4d68-80d6-78836845cc31.png" 
               alt="MediSync Logo" 
-              className="w-12 h-12 object-contain"
+              className="w-12 h-12 object-contain rounded-lg"
             />
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome, {user?.name}</h1>

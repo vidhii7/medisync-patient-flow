@@ -111,7 +111,7 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
               <img 
                 src="/lovable-uploads/b19e2615-f6ed-4d68-80d6-78836845cc31.png" 
                 alt="MediSync Logo" 
-                className="w-8 h-8 object-contain"
+                className="w-8 h-8 object-contain rounded-lg"
               />
               <span className="font-bold text-xl text-medisync-800 dark:text-medisync-300">MediSync</span>
             </Link>
