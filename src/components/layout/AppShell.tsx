@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -16,7 +15,6 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
-  // Define navigation items based on user role
   const getNavigationItems = () => {
     const baseItems = [
       {
@@ -99,7 +97,6 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      {/* Top Navigation Bar */}
       <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="flex justify-between items-center px-4 h-16 mx-auto max-w-7xl">
           <div className="flex items-center gap-4">
@@ -111,9 +108,11 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
             </button>
             
             <Link to="/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-medisync-500 rounded-md flex items-center justify-center">
-                <span className="font-bold text-white">M</span>
-              </div>
+              <img 
+                src="/lovable-uploads/b19e2615-f6ed-4d68-80d6-78836845cc31.png" 
+                alt="MediSync Logo" 
+                className="w-8 h-8 object-contain"
+              />
               <span className="font-bold text-xl text-medisync-800 dark:text-medisync-300">MediSync</span>
             </Link>
           </div>
@@ -139,9 +138,7 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
         </div>
       </header>
       
-      {/* Main Content */}
       <div className="flex min-h-[calc(100vh-4rem)]">
-        {/* Sidebar */}
         <aside 
           className={cn(
             "fixed inset-y-0 left-0 w-64 mt-16 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform transform z-20",
@@ -175,7 +172,6 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
           </nav>
         </aside>
         
-        {/* Page Content */}
         <main className={cn(
           "flex-1 transition-all duration-300 dark:text-white",
           isMobileMenuOpen ? "md:ml-64" : "ml-0 md:ml-64"
@@ -185,7 +181,6 @@ const AppShell: React.FC<AppShellProps> = ({ children }) => {
           </div>
         </main>
         
-        {/* Mobile Overlay */}
         {isMobileMenuOpen && (
           <div 
             className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"

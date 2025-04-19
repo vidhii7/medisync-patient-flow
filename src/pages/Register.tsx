@@ -61,8 +61,12 @@ const Register: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="w-12 h-12 bg-medisync-500 rounded-lg mx-auto flex items-center justify-center mb-4">
-          <span className="text-2xl font-bold text-white">M</span>
+        <div className="flex justify-center">
+          <img 
+            src="/lovable-uploads/b19e2615-f6ed-4d68-80d6-78836845cc31.png" 
+            alt="MediSync Logo" 
+            className="w-24 h-24 mb-6 object-contain"
+          />
         </div>
         <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-white">
           Create your account

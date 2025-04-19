@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePatient } from "@/contexts/PatientContext";
@@ -17,7 +16,6 @@ const Dashboard: React.FC = () => {
     }
   }, [user, getUserTasks]);
 
-  // Stats for all roles
   const stats = [
     {
       name: "Active Patients",
@@ -45,12 +43,10 @@ const Dashboard: React.FC = () => {
     }
   ];
 
-  // Tasks for current user
   const pendingTasks = userTasks.filter(task => task.status === "pending").length;
   const inProgressTasks = userTasks.filter(task => task.status === "in-progress").length;
   const completedTasks = userTasks.filter(task => task.status === "completed").length;
 
-  // Role-specific welcome message
   const getWelcomeMessage = () => {
     if (!user) return "";
     
@@ -72,11 +68,19 @@ const Dashboard: React.FC = () => {
     <AppShell>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome, {user?.name}</h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{getWelcomeMessage()}</p>
+          <div className="flex items-center gap-4 mb-4">
+            <img 
+              src="/lovable-uploads/b19e2615-f6ed-4d68-80d6-78836845cc31.png" 
+              alt="MediSync Logo" 
+              className="w-12 h-12 object-contain"
+            />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome, {user?.name}</h1>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{getWelcomeMessage()}</p>
+            </div>
+          </div>
         </div>
 
-        {/* Stats Overview */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.name} className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
@@ -99,10 +103,8 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
 
-        {/* ML Insights Section */}
         <MLSection />
 
-        {/* Tasks Overview */}
         <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
             <div>
@@ -150,7 +152,6 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Recent Activity / Tasks List */}
         <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
             <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white">Recent Tasks</h3>
