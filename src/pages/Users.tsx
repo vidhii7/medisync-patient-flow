@@ -22,6 +22,14 @@ interface UserData {
   lastProcedure?: string;
 }
 
+// Interface for creating/updating users, including optional password field
+interface UserFormData {
+  name: string;
+  email: string;
+  role: UserRole;
+  password?: string;
+}
+
 const Users = () => {
   const [userDialogOpen, setUserDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -40,7 +48,7 @@ const Users = () => {
     }
   });
 
-  const handleCreateUser = async (data: Omit<UserData, 'id'>) => {
+  const handleCreateUser = async (data: UserFormData) => {
     try {
       const auth = getAuth();
       
@@ -68,7 +76,7 @@ const Users = () => {
     }
   };
 
-  const handleUpdateUser = async (data: Partial<UserData>) => {
+  const handleUpdateUser = async (data: Partial<UserFormData>) => {
     if (!selectedUser) return;
     
     try {
